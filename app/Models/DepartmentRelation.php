@@ -18,7 +18,7 @@ class DepartmentRelation extends Model
 
     public function Department()
     {
-        $this->belongsTo(Department::class);
+       return $this->belongsTo(Department::class,'parent_id');
     }
 
 }

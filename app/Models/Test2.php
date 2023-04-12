@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Test2 extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'depth'
+        'test_id'
     ];
 
-    public $timestamps = false;
 
-    public function DepartmentRelation()
+    public function test()
     {
-       return $this->hasMany(DepartmentRelation::class,'parent_id');
+       return $this->belongsTo(Test::class,'test_id');
     }
-
 
 }

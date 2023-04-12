@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\DepartmentRelation;
+use App\Models\Test;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -21,6 +22,15 @@ class DepartmentController extends Controller
         $departMents = Department::get();
 
         // dd($departMents);
+
+        // $test = Test::with('test2')->get()->toArray();
+        // $test = Test::find(1)->test2;;
+
+        // echo '<pre>';
+        // var_dump($test);
+        // exit;
+        // dd($test);
+
 
         return view('department.regist', compact('departMents'));
 
@@ -40,13 +50,12 @@ class DepartmentController extends Controller
             // dd($parentDep,$depth);
         }
         
-        // $departMent = Department::create([
-        //     'name' => $req->name,
-        //     'depth' => $depth
-        // ]);
-
-
-        // $insertId = $departMent->id;
+        $departMent = Department::create([
+            'name' => $req->name,
+            'depth' => $depth
+        ]);
+        $insertId = $departMent->id;
+        // $insertId = 10;
       
         if($req->parentId === '0') {
             DepartmentRelation::create([
@@ -54,9 +63,29 @@ class DepartmentController extends Controller
                 'child_id' => $insertId
             ]);
         } else {
-            $parentDep = Department::where('id', $req->parentId)->get();
+            $depReration = DepartmentRelation::with('Department')
+            ->where(['child_id' => $req->parentId])
+            ->get()->toArray();
 
-            dd($parentDep);
+            $parentIdArr = [];
+            foreach($depReration as $data) {
+                $parentIdArr [] = [
+                    'parent_id' => $data['parent_id'],
+                    'child_id' => $insertId
+                ];
+            }
+
+            // 自身のデータも保存
+            $parentIdArr[] = [
+                'parent_id' => $insertId,
+                'child_id' => $insertId,
+            ];
+
+            DepartmentRelation::insert($parentIdArr);
+
+
+            // dd($depReration,$parentIdArr);
+            // dd($parentDep,$parentR);
 
         }
 
