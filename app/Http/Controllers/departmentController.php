@@ -13,6 +13,10 @@ class DepartmentController extends Controller
     public function index()
     {
 
+        $depReration = DepartmentRelation::with('Department')->get()->toArray();
+
+        dd($depReration);
+
         return view('department.index');
     }
 
@@ -24,7 +28,7 @@ class DepartmentController extends Controller
         // dd($departMents);
 
         // $test = Test::with('test2')->get()->toArray();
-        // $test = Test::find(1)->test2;;
+        // $test = Test::find(1)->test2;
 
         // echo '<pre>';
         // var_dump($test);

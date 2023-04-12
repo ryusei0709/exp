@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryContorller;
 use App\Http\Controllers\DepartmentController;
 use App\Models\Department;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('category')->group(function () {
+    Route::get('/', [CategoryContorller::class, 'index']);
+    Route::get('/treeList', [CategoryContorller::class, 'treeList']);
 });
 
 Route::prefix('department')->group(function () {
